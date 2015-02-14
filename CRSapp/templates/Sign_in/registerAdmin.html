@@ -1,0 +1,40 @@
+{% extends "Sign_in/userlogin.html" %}
+{% block title %} register Admin {% endblock %}
+{% block icon %}
+<a class="navbar-brand" href="#">CRS_SuperUser</a>
+{% endblock %}
+{% block nav %}
+<ul class="nav navbar-nav navbar-right">
+    <li ><a href="/superlogout"><font>Logout</a></fron></li>
+</ul>
+{% endblock %}
+{% block loginform %}
+    <h1 class="margin-base-vertical">Welcome to CRS_SuperUser</h1>
+    <p>Please register a new AdminUser</p>
+    <form action="{% url 'registerAdmin' %}" method="post" class="margin-base-vertical" role="form">
+        {% csrf_token %}
+        
+        <div class="form-group" >
+            {{registerform.username}}<label class="login-field-icon fui-user" ></label><span style="color:red">{{registerform.username.errors}}</span>
+        </div>
+        <div class="form-group" >
+            {{registerform.email}}<label class="login-field-icon fui-mail" ></label><span style="color:red">{{registerform.email.errors}}</span>
+        </div>
+        <div class="form-group" >
+            {{registerform.password1}}<label class="login-field-icon fui-lock" ></label><span style="color:red">{{registerform.password1.errors}}</span>
+        </div>
+        <div class="form-group" >
+            {{registerform.password2}}<label class="login-field-icon fui-lock" ></label><span style="color:red">
+            {{registerform.password2.errors}}</span>
+        </div>
+        
+        <div class="form-group" style="color:red">{{registerform.non_field_errors}}
+        </div>
+        <p class="text-center">
+        <input type="submit" class="btn btn-primary btn-lg btn-block" Value="Register">
+        </p>
+        </form>
+</div><!--/.navbar-collapse -->
+{% endblock %}
+{% block registerjs %}
+{% endblock %}

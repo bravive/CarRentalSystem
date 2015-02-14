@@ -1,0 +1,12 @@
+ [
+      {"fields":
+          {
+              "car_id": "{{car.id}}",
+              "car_CIN": "{{car.CIN}}",
+              "car_type": "{{car.cartype.cartype}}",
+              "car_fee": "{{car.cartype.rentalfee}}",
+              "car_status": "{{car.status}}",
+              "car_mile":"{{car.mile}}"
+          }
+      }
+  ]

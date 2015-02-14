@@ -1,0 +1,45 @@
+[
+    {
+        "errors":
+        {
+            "error_CIN": "{{error_CIN_required}}",
+            "error_username_email":"{{error_username_email_required}}",
+            "error_match":"{{error_match}}",
+            "error_mile_match":"{{error_mile_match}}",
+            "error_sheet":"{{error_sheet}}"
+        }
+        ,
+        "sheet":
+        {
+            "mile_final":"{{mile_final}}",
+            "mile_diff": "{{mile_diff}}",
+            "CIN": "{{CIN}}",
+            "car_fee": "{{car_fee}}",
+            "email": "{{email}}",
+            "fromdate": "{{fromdate}}",
+            "fromtime": "{{fromtime}}",
+            "todate": "{{todate}}",
+            "totime": "{{totime}}"
+        }
+        ,
+        "addreturn":
+        {
+          "success": "{{return_success}}",
+          "error":"{{return_error}}"
+        }
+      {% for field in ReserveHistory %}
+        ,
+        "fields":
+        {
+            "CIN": "{{field.CIN}}",
+            "Name": "{{field.user.username}}",
+            "Email": "{{User_email}}",
+            "Fromdate": "{{field.fromdate}}",
+            "Fromtime":"{{field.fromtime}}",
+            "Todate": "{{field.todate}}",
+            "Totime":"{{field.totime}}"
+        }
+      {% endfor %}
+
+    }
+]

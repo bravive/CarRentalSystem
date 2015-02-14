@@ -1,0 +1,20 @@
+ [
+  
+      {% for car in cars %}
+      {"fields":
+          {
+              "car_id": "{{car.id}}",
+              "car_CIN": "{{car.CIN}}",
+              "car_type": "{{car.cartype.cartype}}",
+              "car_fee": "{{car.cartype.rentalfee}}",
+              "car_status": "{{car.status}}",
+              "car_mile":"{{car.mile}}",
+              "from_date":"{{from_date}}",
+              "from_time":"{{from_time}}",
+              "to_date":"{{to_date}}",
+              "to_time":"{{to_time}}",
+              "error_time":""
+          }
+      }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+  ]

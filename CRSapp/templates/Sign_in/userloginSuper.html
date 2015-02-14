@@ -1,0 +1,35 @@
+{% extends "Sign_in/userlogin.html" %}
+{% block title %} superuser login {% endblock %}
+{% block icon %}
+<a class="navbar-brand" href="#">CRS_SuperUser</a>
+{% endblock %}
+{% block loginform %}
+<h1 class="margin-base-vertical">Use superuser account to login</h1>
+<p>
+Login to register a new Administrator
+</p>
+<form action="{% url 'userLoginSuper' %}" method="post" class="margin-base-vertical" role="form">
+    {% csrf_token %}
+    <div class="form-group" >
+        {{form.username}}<label class="login-field-icon fui-user" ></label>
+    </div>
+    <div class="form-group" >
+        {{form.password}}<label class="login-field-icon fui-lock" ></label>
+    </div>
+    
+    <input type="hidden" name="next" value="{{next}}">
+    <p class="text-center">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+        <a class="text-center" href="{% url 'FindPass' %}"><font color="aa0000" size="2px">Forgot Password</font></a>
+    </p>
+    
+
+    {% if form.errors %}
+    <div style="color:red">
+    <font size="3" >
+        * Incorrect user name and password.
+    </font>
+    </div>
+    {% endif %}
+    </form>
+{% endblock %}

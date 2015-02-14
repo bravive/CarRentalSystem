@@ -1,0 +1,8 @@
+[
+    {
+        "fields":
+          {
+              "error_time": "{{errors_time_select}}"
+          }
+    }
+]

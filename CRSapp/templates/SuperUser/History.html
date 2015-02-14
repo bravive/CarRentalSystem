@@ -1,0 +1,50 @@
+{% extends "../templates/BasepageGeneralUser.html" %}
+{% block history_nav %}<li class="active"><a href="#">RentalHistory</a></li>{% endblock %}
+{% block main %}
+<div style="overflow:auto;float:left">
+    <div class="jumbotron" style="margin-left:10px;margin-top:8px;padding:10px;width:300px">
+        <div >
+            <a href="#" class="thumbnail ">
+                {% block big_photo %}<img src="{{STATIC_URL}}Image/default.jpg"  alt="Cat-Downloaded"/>{% endblock %}
+            </a>
+        </div>
+    </div>
+</div>
+<div class="navbar-form navbar-right" style="padding:0px">
+    <div class="jumbotron" style="padding:10px;width:700px">
+        <h3><span class="label label-default">Transaction Record</span></h3>
+        <table id="t01">
+            <tr>
+                <th>Number#</th>
+                <th>Even Date</th>
+                <th>Car Type</th>
+                <th>Transaction</th>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>10/15/2014</td>
+                <td>Fort</td>
+                <td>Resevered</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>10/14/2014</td>
+                <td>BMW</td>
+                <td>Returned</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>10/13/2014</td>
+                <td>BMW</td>
+                <td>Confirmed</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>10/10/2014</td>
+                <td>BMW</td>
+                <td>Resevered</td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock  %}

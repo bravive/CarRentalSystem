@@ -1,0 +1,11 @@
+[
+    {
+        "fields":
+          {
+              "error_mile": "{{error_mile_required}}",
+              "mile":"{{mile}}",
+              "fee":"{{fee}}",
+              "success":"{{success}}"
+          }
+    }
+]

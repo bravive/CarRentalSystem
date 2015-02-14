@@ -1,0 +1,72 @@
+{% extends "../templates/BasepageAdministratorUser.html" %}
+{% block customer_nav %}<li class="active"><a href="#">Customer</a></li>{% endblock %}
+{% block main %}
+    <div class="jumbotron" style="padding:10px;width:400px;overflow:auto;float:left">
+        <h1><span class="label label-default">Index</span></h1><br>
+        
+        <div style="overflow:auto;background-color:#e0e0e0;border-radius: 10px;height:500px">
+            <ul >
+                {% for item in customer %}
+                <li><font size="4"><a href={% url 'CustomerProfile' item.id %}>{{item.username}}</a>: {{item.email}}</font></li>
+                {% endfor %}
+            </ol>
+       </div>
+    </div>
+    
+    <div class="jumbotron" style="padding:10px;width:600px;overflow:auto;float:right">
+        <h1><span class="label label-default">Customer info.</span></h1><br>
+        <div style="overflow:auto;background-color:#e0e0e0;border-radius:10px">
+                {% if profilecur.picture %}
+                <img style="float:left" src="{% url 'getphoto' currentcustomer.id %}" alt="{{currentcustomer.username}}" width="200px"/>
+                {% else %}
+                <img style="float:left" src="{{STATIC_URL}}Image/default.jpg" alt="Car-Downloaded" width="200px"/>
+                {% endif %}
+                <div style="float:left;width:250px">
+                    <ul style="list-style-type:none">
+                        <li><strong>Username</strong>: {{currentcustomer.username}}</li>
+                        <li><strong>First_name</strong>: {{profilecur.First_name}} </li>
+                        <li><strong>Last_name</strong>: {{profilecur.Last_name}}</li>
+                        <li><strong>Address_1</strong>: {{profilecur.Address_1}}</li>
+                        <li><strong>Address_2</strong>: {{profilecur.Address_2}}</li>
+                        <li><strong>City</strong>: {{profilecur.City}}</li>
+                        <li><strong>State</strong>: {{profilecur.State}}</li>
+                        <li><strong>Zip</strong>: {{profilecur.Zip}}</li>
+                        <li><strong>Country</strong>: {{profilecur.Country}}</li>
+                        <li><strong>Phone</strong>: {{profilecur.Phone}}</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <h4><span class="label label-default">History Record</span></h4>
+                <table id="t01" class="mytable">
+                    <tr>
+                        <th>#Number</th>
+                        <th>Event Date</th>
+                        <th>CIN#</th>
+                        <th>Progress..</th>
+                    </tr>
+                    {% for history in historys reversed%}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{history.createdtime}}</td>
+                        <td>{{history.CIN}}</td>
+                        {%if history.status_returned %}
+                            <td>Returned</td>
+                        {%elif history.status_confirmed %}
+                            <td>Confirmed</td>
+                        {%elif history.status_deleted %}
+                            <td>Deleted</td>
+                        {%elif history.status_reserved%}
+                            <td>Reserved</td>
+                        {% else %}
+                            <td>ERROR!</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

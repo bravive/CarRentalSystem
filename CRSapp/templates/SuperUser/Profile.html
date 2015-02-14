@@ -1,0 +1,69 @@
+{% extends "../templates/BasepageGeneralUser.html" %}
+{% block profile_nav %}<li class="active"><a href="#">Profile</a></li>{% endblock %}
+{% block main %}
+<div style="overflow:auto;float:left">
+    <div class="jumbotron" style="margin-left:10px;margin-top:8px;padding:10px;width:300px">
+        <div >
+            <a href="#" class="thumbnail ">
+                {% block big_photo %}<img src="{{STATIC_URL}}Image/default.jpg"  alt="Cat-Downloaded"/>{% endblock %}
+            </a>
+        </div>
+    </div>
+    <div class="jumbotron" style="margin-left:10px;margin-top:8px;padding:10px;width:300px">
+        <ul class="list-group">
+            <li class="list-group-item">Username:</li>
+            <li class="list-group-item">First_name:</li>
+            <li class="list-group-item">Last_name:</li>
+            <li class="list-group-item">Address_1:</li>
+            <li class="list-group-item">Address_2:</li>
+            <li class="list-group-item">City:</li>
+            <li class="list-group-item">State:</li>
+            <li class="list-group-item">Zip:</li>
+            <li class="list-group-item">Country:</li>
+            <li class="list-group-item">Phone:</li>
+        </ul>
+    </div>
+</div>
+<div class="navbar-form navbar-right">
+    <div class="jumbotron" style="margin-right:100px;margin-top:8px;padding:10px;width:500px">
+        <form enctype="multipart/form-data" action="#" method="post">
+            <table>
+                {{form_entry}}
+            </table>
+            <input type="submit" value="Save" class="btn btn-primary" style="margin-left:400px">
+            {% csrf_token %}
+        </form>
+    </div>
+    <div class="jumbotron" style="margin-right:100px;margin-top:8px;padding:10px;width:500px">
+        <div>
+            <table>
+                <!--clean__class()&self_validation are in field_errors, but field_errors are under visible_fields.-->
+                {% if form_message %}
+                <td><font size="4" color="green"><ul><li>{{form_message}}</li></ul></font></td><nobr>
+                    
+                    {% endif %}
+                    {% for field in form_errors.visible_fields %}
+                    {% if field.errors %}
+                    <tr>
+                        <td><font size="2" color="red">{{field.errors}}</font></td><nobr>
+                            </tr>
+                    {% endif %}
+                    {% endfor %}
+                    <!--clean() errors always in non_field_errors-->
+                    {% for field in form_errors.non_field_errors %}
+                    <tr>
+                        <td><font size="2" color="red"><ul><li>{{field}}</li></ul></font></td><nobr>
+                    </tr>
+                    {% endfor %}
+            </table>
+        </div>
+        <form action="#" method="post">
+            {% for field in form_password.visible_fields%}
+                {{field}}
+            {% endfor %}
+            <br><input type="submit" value="Save" class="btn btn-primary" style="margin-left:400px">
+            {% csrf_token %}
+        </form>
+    </div>
+</div>
+{% endblock %}

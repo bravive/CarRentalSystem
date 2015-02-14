@@ -1,0 +1,12 @@
+[
+    {
+        "fields":
+          {
+              "error_mile": "{{error_mile_required}}",
+              "error_overlap":"{{error_overlap}}",
+              "success": "{{success}}",
+              "reserve":"{{reserve}}",
+              "error_general":"{{error_conflict}}"
+          }
+    }
+]

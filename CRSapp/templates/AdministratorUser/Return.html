@@ -1,0 +1,149 @@
+{% extends "../templates/BasepageAdministratorUser.html" %}
+{% block return_nav %}<li class="active"><a href="#">Return</a></li>{% endblock %}
+{% block main %}
+<div style="overflow:auto;min-width:1100px">
+    <div class= "jumbotron" style="overflow:auto;float:left;width:230px;margin:20px;padding:10px">
+        <div id="error_CIN_required"></div>
+        <div id="error_username_email_required"></div>
+        <div id="error_match_required"></div>
+        <form id="return_car_info" action= "{% url 'CRSapp_ajax_return_car' %}" method="get">
+            <div style="width:200px">
+                <div style="float:left">
+                    <label><strong>CIN:</strong></label>
+                    <select class="form-control" style="width:200px" id="selectCIN" name="carCIN" >
+                        <option value=""></option>
+                        {% for field in allCars %}
+                            <option value="{{field.CIN}}">{{field.CIN}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div style="float:left">
+                    <label><strong>Username:</strong></label>
+                    <select class="form-control" style="width:200px" id="selectNames" name="username" >
+                        <option value=""></option>
+                        {% for field in allGeneralUsers %}
+                            <option value="{{field.username}}">{{field.username}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label><strong>Email:</strong></label>
+                    <input class="form-control" type="text" placeholder= 'Email'  name = 'email'value=''style='width:200px'>
+                </div>
+            </div>
+            <div style="float:left;margin-top:20px">
+                <input type="submit" style="width:200px"class="btn btn-default" value="Search" onclick="ajax_get_return_car()">
+            </div>
+        </form>
+    </div>
+    <div class="navbar-form" style="padding:0px">
+        <div class= "jumbotron" style="overflow:auto;float:left;width:750px;margin:20px;padding:10px">
+            <h3><span class="label label-default">Return info.</span></h3>
+            <div style="overflow:auto;background-color:#f0f0f0;padding:20px;border-radius: 10px;">
+                <form id="generate_sheet" action= "{% url 'CRSapp_ajax_generate_sheet' %}" method="get">
+                    <div style="float:right">
+                        <strong>Mile(Required):</strong><input class="form-control" type="text" id ="final_mile" name="final_mile">
+                    </div>
+
+                    <div>
+                        <font size="5">
+                            <div style="float:left"><strong>CIN:</strong></div>
+                            <div id = "car_CIN" >None</div>
+                            <input type="hidden" id="input_car_CIN" name = "car_CIN" value="">
+                        </font>
+                    </div>
+                    <div>
+                        <font size="5">
+                            <div style="float:left"><strong>Name:</strong></div>
+                            <div id = "customer_name">None</div>
+                            <input type="hidden" id="input_customer_name" name = "customer_name" value="">
+                        </font>
+                    </div>
+                    <div>
+                        <font size="5">
+                            <div style="float:left"><strong>Email:</strong></div>
+                            <div id = "customer_email">None</div>
+                            <input type="hidden" id="input_customer_email" name = "customer_email" value="">
+                        </font>
+                    </div>
+                    <div>
+                        <font size="5">
+                            <div style="float:left"><strong>From Date:</strong></div>
+                            <div id = "customer_fromdate">None</div>
+                            <input type="hidden" id="input_customer_fromdate" name = "customer_fromdate" value="">
+                        </font>
+                    </div>
+                    <div>
+                        <font size="5">
+                            <div style="float:left"><strong>From Time:</strong></div>
+                            <div id = "customer_fromtime">None</div>
+                            <input type="hidden" id="input_customer_fromtime" name = "customer_fromtime" value="">
+                        </font>
+                    </div>
+                    <div>
+                        <font size="5">
+                            <div style="float:left"><strong>To Date:</strong></div>
+                            <div id = "customer_todate">None</div>
+                            <input type="hidden"id="input_customer_todate" name = "customer_todate" value="">
+                        </font>
+                    </div>
+                    <div>
+                        <font size="5">
+                            <div style="float:left"><strong>To Time:</strong></div>
+                            <div id = "customer_totime">None</div>
+                            <input type="hidden" id="input_customer_totime" name = "customer_totime" value="">
+                        </font>
+                    </div>
+                    <hr>
+                    <input data-toggle="modal" data-target="#myModal" style="width:200px;float:right;margin:10px" class="btn  btn-default" type="submit" value="Return" onclick="generate_sheet()">
+                </form>
+                <input style="width:200px;float:right;margin:10px"type="submit" class="btn  btn-default" value="Cancel" onclick="cancel_search()">
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+            <div class="modal-dialog" style="top:80px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                            data-dismiss="modal">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Return a car!
+                        </h4>
+                    </div>
+                   <form id = "return_form" action= "{% url 'CRSapp_add_return' %}" method="post">
+                       <div class="modal-body" style="overflow:auto">
+                           <div id = "returnForm" role="inquiry-info" >
+
+                           </div>
+                           <div style="margin-top:60px" id="mile_error">
+
+                           </div>
+                           <div style="margin-top:60px" id="select_error">
+
+                           </div>
+                           <div style="margin-top:60px" id="add_return_error">
+
+                           </div>
+                           <div id="success">
+
+                           </div>
+
+                       </div>
+
+                       <div class="modal-footer">
+                           <button type="button" class="btn btn-default"
+                               data-dismiss="modal" onclick="cancel_return_info()">Cancel
+                           </button>
+                           <input type="submit" id="add_reserve_button" class="btn btn-primary" onclick="ajax_add_return()">
+                       </div>
+                   </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+</div>
+{% endblock %}

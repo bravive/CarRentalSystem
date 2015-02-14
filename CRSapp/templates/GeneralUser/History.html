@@ -1,0 +1,96 @@
+{% extends "../templates/BasepageGeneralUser.html" %}
+{% block history_nav %}<li class="active"><a href="#">RentalHistory</a></li>{% endblock %}
+{% block main %}
+<div style="overflow:auto;float:left">
+    <div class="thumbnail" style="overflow:auto;float:left;padding:10px;width:200px">
+        {% block big_photo %}
+        {% if profilecur.picture %}
+        <img src="{% url 'getphoto' id %}" alt="{{currentuser.username}}"/>
+        {% else %}
+        <img src="/static/Image/default.jpg"  alt="Cat-Downloaded"/>
+        {% endif %}
+        {% endblock %}
+    </div>
+</div>
+<div class="navbar-form navbar-right" style="padding:0px">
+    <div class="jumbotron" style="padding:10px;width:800px">
+        <h1><span class="label label-default">Transaction Record</span></h1><br>
+        <table class="mytable" id="t01" style="width:100%">
+            <tr>
+                <th>Number</th>
+                <th>Event Date</th>
+                <th>Car ID</th>
+                <th>Reserved</th>
+                <th>Confirmed</th>
+                <th>Returned</th>
+                <th>Deleted</th>
+                <th>Operation</th>
+            <tr>
+            {% for order in historys reversed %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{order.createdtime}}</td>
+                <td>{{order.CIN}}</td>
+                <td>{% if order.status_reserved %}Yes
+                    {% else %}No
+                    {% endif %}</td>
+                <td>{% if order.status_confirmed %}Yes
+                    {% else %}No
+                    {% endif %}</td>
+                <td>{% if order.status_returned %}Yes
+                    {% else %}No
+                    {% endif %}</td>
+                <td id="delete{{order.id}}">{% if order.status_deleted %}Yes
+                    {% else %}No
+                    {% endif %}</td>
+                <td id="oprate{{order.id}}">{% if order.status_reserved and not order.status_confirmed and not order.status_returned and not order.status_deleted%}
+                    <a href="" style="margin-right:20px;margin-left:5px" data-toggle="modal" data-target="#myModal_delete" onclick="deleteordergen({{order.id}})">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <input type="hidden" id="FD{{order.id}}" name="confirm_from_date" value={{order.fromdate}}>
+            <input type="hidden" id="FT{{order.id}}" name="confirm_from_time" value={{order.fromtime}}>
+            <input type="hidden" id="TD{{order.id}}" name="confirm_to_date" value={{order.todate}}>
+            <input type="hidden" id="TT{{order.id}}" name="confirm_to_time" value={{order.totime}}>
+            <input type="hidden" id="USER{{order.id}}" name="confirm_user" value={{order.user.username}}>
+            <input type="hidden" id="CIN{{order.id}}" name="confirm_CIN" value={{order.CIN}}>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="myModal_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria=hidden="false">
+    <div class="modal-dialog" style="top:80px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                    data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Delete the Reservation
+                </h4>
+            </div>
+            <form id = "delete_form" action= "{% url 'CRSapp_add_deletegen' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body" style="overflow:auto">
+                    <div id = "deleteForm" role="inquiry-info" >
+                    </div>
+                    <div id="success_delete">
+                    </div>
+
+                    <div id="error_delete">
+                    </div>
+                    
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                        data-dismiss="modal">Cancel
+                    </button>
+                    <input type="submit" id="add_delete_button" class="btn btn-primary" onclick="ajax_add_deletegen()">
+                        </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+{% endblock  %}

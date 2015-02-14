@@ -1,0 +1,9 @@
+{% extends "Sign_in/userlogin.html" %}
+{% block title %} Confirmed {% endblock %}
+{% block loginform %}
+<h1 class="margin-base-vertical"> Congratulations! </h1>
+<p>
+Thank you for confirming your email address.<br><br>
+Please <a href="{% url 'CRSapp_home' %}">login</a> to CRS. And pick up your favorite cars!
+</p>
+{% endblock %}

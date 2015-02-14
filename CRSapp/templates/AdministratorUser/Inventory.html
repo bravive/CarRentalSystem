@@ -1,0 +1,152 @@
+{% extends "../templates/BasepageAdministratorUser.html" %}
+{% block inventory_nav %}<li class="active"><a href="#">Inventory</a></li>{% endblock %}
+{% block main %}
+<div class="navbar-form" style="padding:0px">
+    <div class="thumbnail" style="padding:10px;width:700px;overflow:auto;min-height:400px;float:left">
+        <h1><span class="label label-default">INVENTORY INFORMATION</span></h1><br>
+        <table class="mytable" id="t01" style="width:100%;float:left">
+            <tr id="inventoryInfo_row_id">
+                <th>CIN#</th>
+                <th>Car Type</th>
+                <th>Status</th>
+                <th>Fee</th>
+                <th>Miles</th>
+                <th>Created Time</th>
+                <th width="130px">Operation</th>
+            </tr>
+            {{last}}
+            {% for field in allcars %}
+            <tr id="inventoryInfo_row_{{field.CIN}}">
+                <td id={{field.id}}>{{field.CIN}}</td>
+                <td id="type{{field.id}}">{{field.cartype.cartype}}</td>
+                <td>{{field.status}}</td>
+                <td class="fee{{field.cartype.cartype}}">{{field.cartype.rentalfee}}</td>
+                <td id="mile{{field.id}}">{{field.mile}}</td>
+                <td>{{field.createdtime}}</td>
+                <td>
+                    <a href="#" style="margin-right:20px;margin-left:5px" data-toggle="modal" data-target="#editModal" onclick="edit({{field.id}})">Edit</a>
+                    <a href="#" data-toggle="modal" data-target="#myModal_delete" onclick="delete_car_sheet('{{field.CIN}}')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div>
+	    <div  class="thumbnail" style="padding:10px;float:right;width:350px">
+	        <h1 class="margin-base-vertical">Add a New Car</h1>
+	            <form id="carform" action= "{% url 'CRSapp_addCar' %}" method="post" style="margin-top:25px">
+	                {% csrf_token %}
+                
+	                <select id="selectCarType" name="cartype" data-toggle="select" class="form-control select select-inverse mrs mbm" style="width:320px">
+	                    {% for field in cartypes %}
+	                        <option value="{{field}}">{{field.cartype}}</option>
+	                    {% endfor %}
+	                </select>
+	                <input type="submit" class="btn btn-primary" style="float:right;margin-right:20px" value="ADD"></nobr><br>
+                
+	            </form>
+	    </div>
+	    <div class="thumbnail" style="padding:10px;float:right;width:350px">
+	        <h1 class="margin-base-vertical">Add a New CarType:</h1>
+	            <form action="{% url 'CRSapp_addCarTpye' %}" method="post" enctype="multipart/form-data" style="margin-top:25px"  class="form-horizontal" role="form">
+	                {% csrf_token %}
+	                <table>
+	                {% for field in form_cartype.visible_fields %}
+	                <tr>
+	                    <td>{{field.label_tag }}</td>
+	                    <td>{{field}}</td>
+	                </tr>
+	                {% endfor %}
+                
+	                </table>
+	                <input type="submit" class="btn btn-primary" style="float:right;margin-right:20px" value="ADD">
+	            </form>
+	            <table>
+	                <!--clean__class()&self_validation are in field_errors, but field_errors are under visible_fields.-->
+	                {% for field in form_cartype.visible_fields %}
+	                {% if field.errors %}
+	                <tr>
+	                    <td><font size="2" color="red">{{field.errors}}</font></td><nobr>
+	                </tr>
+	                {% endif %}
+	                {% endfor %}
+	                <!--clean() errors always in non_field_errors-->
+	                {% for field in form_cartype.non_field_errors %}
+	                <tr>
+	                    <td><font size="2" color="red"><ul><li>{{field}}</li></ul></font></td><nobr>
+	                </tr>
+	                {% endfor %}
+	            </table>
+	        </div>
+        
+	    </div>
+	  </div>
+    <div class="modal fade" id="myModal_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+        <div class="modal-dialog" style="top:80px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                        data-dismiss="modal">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Delete the Car
+                    </h4>
+                </div>
+                <form id = "delete_car_form" action= "{% url 'CRSapp_add_delete_car' %}" method="post">
+                    <div class="modal-body" style="overflow:auto">
+                        <div id = "deleteForm" role="inquiry-info" >
+                        </div>
+
+                        <div id="success_delete">
+                        </div>
+
+                        <div id="error_delete">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"data-dismiss="modal">Cancel</button>
+                        <input type="submit" id="delete_car_button" class="btn btn-primary" onclick="ajax_delete_car()">
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria=hidden="false">
+        <div class="modal-dialog" style="top:80px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                        data-dismiss="modal">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Edit the car information
+                    </h4>
+                </div>
+                <form id = "edit_form" action= "{% url 'CRSapp_edit_car' %}" method="post">
+                    {% csrf_token %}
+                    <div class="modal-body" style="overflow:auto">
+                        <div id = "editForm" role="inquiry-info" >
+
+                        </div>
+                        <div id="mile_error_edit">
+                        </div>
+                        <div id="success_edit">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                            data-dismiss="modal">Cancel
+                        </button>
+                        <input type="submit" id="edit_car_button" class="btn btn-primary" onclick="ajax_edit_car()">
+                            </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+{% endblock %}

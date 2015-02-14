@@ -1,0 +1,9 @@
+[
+    {
+        "fields":
+          {
+            "error": "{{errors_delete}}",
+            "success": "{{success}}"
+          }
+    }
+]

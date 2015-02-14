@@ -1,0 +1,12 @@
+{% extends "Sign_in/userlogin.html" %}
+{% block title %} Confirmed {% endblock %}
+{% block loginform %}
+<h1 class="margin-base-vertical"> Congratulations, Admin!</h1>
+<p>
+Thank you for confirming your email address. Now you are an Administrator of CRS.<br><br>
+
+Please <a href="{% url 'CRSapp_home_admin' %}">login</a> to CRS.
+</p>
+{% endblock %}
+
+

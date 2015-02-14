@@ -1,0 +1,31 @@
+{% extends "Sign_in/userlogin.html" %}
+{% block title %} forget password {% endblock %}
+{% block loginform %}
+<h1 class="margin-base-vertical">Use you email address to change password</h1>
+<form action="{% url 'FindPass' %}" method="post" class="margin-base-vertical" role="form">
+    {% csrf_token %}
+    
+    <div class="form-group" >
+        {{findpassform.username}}<label class="login-field-icon fui-user" ></label>
+    </div>
+    <div class="form-group" >
+        {{findpassform.email}}<label class="login-field-icon fui-mail" ></label>
+    </div>
+    
+    <p class="text-center">
+    <input type="submit" class="btn btn-primary btn-lg btn-block" Value="Submit">
+        {% if findpassform.errors %}
+        <div style="color:red">
+            <font size="3" >
+                * Incorrect user name and email address.
+            </font>
+        </div>
+        {% endif %}
+        {% if errorinfo %}
+        <div style="color:red"><font size="3" >* {{errorinfo}}</font></div>
+        {% endif %}
+    </p>
+    
+    </form>
+{% endblock %}
+
